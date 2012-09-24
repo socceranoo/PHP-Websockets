@@ -1,23 +1,6 @@
-<html><head><title>WebSocket</title>
-<style type="text/css">
-html,body {
-	font:normal 0.9em arial,helvetica;
-}
-#log {
-	width:600px; 
-	height:300px; 
-	border:1px solid #7F9DB9; 
-	overflow:auto;
-}
-#msg {
-	width:400px;
-}
-</style>
-<script type="text/javascript">
-var socket;
-
 function init(user) {
-	var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	//var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
 	try {
 		socket = new WebSocket(host);
 		log('WebSocket - status '+socket.readyState);
@@ -78,15 +61,5 @@ function reconnect() {
 function $(id){ return document.getElementById(id); }
 function log(msg){ $("log").innerHTML+="<br>"+msg; }
 function onkey(event){ if(event.keyCode==13){ send(); } }
-</script>
 
-</head>
-<body onload="init('Anoop')">
-<h3>WebSocket v2.00</h3>
-<div id="log"></div>
-<input id="msg" type="textbox" onkeypress="onkey(event)"/>
-<button onclick="send()">Send</button>
-<button onclick="quit()">Quit</button>
-<button onclick="reconnect()">Reconnect</button>
-</body>
-</html>
+
