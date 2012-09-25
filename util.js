@@ -5,22 +5,34 @@ function init(user) {
 		socket = new WebSocket(host);
 		txtareaelem = $("chat");
 		//log('WebSocket - status '+socket.readyState);
+
+		teamchat = $("tchat");
+
 		log('Welcome to the gameroom');
 		log('Connecting to the server ...');
+
+		log2('Welcome to the gameroom');
+		log2('Connecting to the server ...');
+
 		socket.onopen    = function(msg) { 
 								//log("Welcome - status "+this.readyState); 
 								log("Connected"); 
 								var user_msg = "USER:"+user;
 								socket.send(user_msg); 
 								log('You joined the conference room'); 
+								log2("Connected"); 
+								log2('You joined the conference room'); 
 						   };
 		socket.onmessage = function(msg) { 
 							   log(msg.data); 
+							   log2(msg.data); 
 						   };
 		socket.onclose   = function(msg) { 
 							   log("Disconnected"); 
+							   log2("Disconnected"); 
 							   //log("Disconnected - status "+this.readyState); 
 						   };
+
 	}
 	catch(ex){ 
 		log(ex); 
@@ -58,9 +70,9 @@ function send2(){
 	txt.focus();
 	try { 
 		socket.send(msg); 
-		log('You : '+msg); 
+		log2('You : '+msg); 
 	} catch(ex) { 
-		log(ex); 
+		log2(ex); 
 	}
 }
 
@@ -78,6 +90,12 @@ function reconnect() {
 	init('Anoop');
 }
 
+function log2(msg)
+{
+	teamchat.value += msg;
+	teamchat.value += "\n";
+	teamchat.scrollTop = teamchat.scrollHeight;
+}
 // Utilities
 function $(id){ return document.getElementById(id); }
 function log(msg)

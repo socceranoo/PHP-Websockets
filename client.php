@@ -2,7 +2,7 @@
 	<head>
 		<title>WebSocket</title>
 		<link rel="STYLESHEET" type="text/css" href="style.css"/>
-		<script> var socket; var txtareaelem;</script>
+		<script> var socket, socket2, txtareaelem, teamchat;</script>
 		<script src="util.js" type="text/javascript"></script>
 	</head>
 	<body class='gameroom' onload="init('Anoop')">
