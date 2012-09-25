@@ -1,5 +1,4 @@
 <?php
-
 class WebSocketUser {
 
 	public $socket;
@@ -15,8 +14,10 @@ class WebSocketUser {
 	
 	public $hasSentClose = false;
 	public $username;
+	public $team_id;
 	function __construct($id,$socket) {
 		$this->id = $id;
 		$this->socket = $socket;
 	}
 }
+?>
