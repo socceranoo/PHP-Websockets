@@ -1,6 +1,6 @@
 function init(user) {
-	var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
-	//var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	//var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
 	try {
 		socket = new WebSocket(host);
 		txtareaelem = $("chat");
@@ -22,10 +22,11 @@ function init(user) {
 								log('You joined the conference room'); 
 								log2("Connected"); 
 								log2('You joined the conference room'); 
+								//showimages();
 						   };
 		socket.onmessage = function(msg) { 
 							   log(msg.data); 
-							   log2(msg.data); 
+							   //log2(msg.data); 
 						   };
 		socket.onclose   = function(msg) { 
 							   log("Disconnected"); 
@@ -119,4 +120,32 @@ function onkey2(event)
 	{ 
 		send2(); 
 	}
+}
+
+function imgclick(id)
+{
+	$(id).style.visibility='hidden';
+	msg = "clicked "+id+" of clubs";
+	log2(msg);
+	//socket.send(msg);
+}
+
+function showimages()
+{
+	myArray = new Array("top", "bottom", "left", "right");
+	cardArr = new Array("2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k", "a1");
+	suitArr = new Array("c", "h", "s", "d");
+	for(i=0; i<myArray.length; i++) 
+	{
+		suit = suitArr[i];	
+		for(j=0;j<cardArr.length; j++)
+		{
+			id = myArray[i]+"img"+cardArr[j];
+			src= "images/"+cardArr[j]+suit+".gif";
+			var elem = $(id);
+			elem.style.visibility='visible';
+			elem.src=src;
+		}
+	}
+	$("temp").onclick="";
 }
