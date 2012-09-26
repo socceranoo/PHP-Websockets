@@ -2,6 +2,7 @@
 <?php
 
 require_once('./websockets.php');
+require_once('./card_class.php');
 
 class echoServer extends WebSocketServer {
 	//protected $maxBufferSize = 1048576; //1MB... overkill for an echo server, but potentially plausible for other applications.
@@ -13,6 +14,8 @@ class echoServer extends WebSocketServer {
 		{
 			$user->username = $matches['name'];	
 			$message = $user->username . " joined the conference room";
+			$userCardStr = $this->gameobj->addUser($user->username, array_search($user, $this->users));
+			$this->send($user, $userCardStr);
 		}
 		else
 		{
@@ -22,7 +25,9 @@ class echoServer extends WebSocketServer {
 		{
 		//	if ($k != $user)
 			if ($k->socket != $this->master && $k != $user)
+			{
 				$this->send($k, $message);
+			}
 		}
 		//$this->send($user,$message);
 	}
@@ -42,5 +47,6 @@ class echoServer extends WebSocketServer {
 	}
 }
 
-$echo = new echoServer("0.0.0.0","9000");
+$trump = new Trump();
+$echo = new echoServer("0.0.0.0","9000", $trump);
 //$echo = new echoServer("127.0.0.1","9000");

@@ -8,6 +8,7 @@ abstract class WebSocketServer {
 	protected $userClass = 'WebSocketUser'; // redefine this if you want a custom user class.  The custom user class should inherit from WebSocketUser.
 	protected $maxBufferSize;        
 	protected $master;
+	protected $gameobj;
 	protected $sockets                              = array();
 	protected $users                                = array();
 	protected $interactive                          = true;
@@ -15,7 +16,7 @@ abstract class WebSocketServer {
 	protected $headerSecWebSocketProtocolRequired   = false;
 	protected $headerSecWebSocketExtensionsRequired = false;
 
-	function __construct($addr, $port, $bufferLength = 2048) {
+	function __construct($addr, $port, $obj, $bufferLength = 2048) {
 		$this->maxBufferSize = $bufferLength;
 		$this->master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)  or die("Failed: socket_create()");
 		socket_set_option($this->master, SOL_SOCKET, SO_REUSEADDR, 1) or die("Failed: socket_option()");
@@ -23,6 +24,7 @@ abstract class WebSocketServer {
 		socket_listen($this->master,20)                               or die("Failed: socket_listen()");
 		$this->sockets[] = $this->master;
 		$this->stdout("Server started\nListening on: $addr:$port\nMaster socket: ".$this->master);
+		$this->gameobj=$obj;
 
 		while(true) {
 			if (empty($this->sockets)) {

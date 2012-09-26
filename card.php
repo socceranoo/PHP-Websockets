@@ -10,14 +10,12 @@
 		else	
 			$axis="top:";
 		$j=10;
-		$count = 0;
 		for($k=0; $k<13;$k++)
 		{
 			$j++;
-			$count++;
 			$pos = $pos+$card_spacing;
 			$pos_str= $axis.$pos."px";
-			$img_id= $position.$count;
+			$img_id= $position.$k;
 			print "<img id='$img_id' src='images/cardback.gif' style='z-index:$j;position:absolute;$pos_str;' onclick=\"cardclick('$img_id')\"></img>";
 			//print "<img id='$img_id' src='images/cardback.gif' style='z-index:$j;position:absolute;$pos_str;'></img>";
 		}

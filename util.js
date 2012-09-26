@@ -1,12 +1,12 @@
 var socket, socket2, txtareaelem, teamchat;
 var totalcards, totalplayers, curopencount;
 var deck=52;
-var cardArr = new Array("2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k", "a1");
-var suitArr = new Array("c", "h", "s", "d");
+var rankArr = new Array("a1", "2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k");
+var suitArr = new Array("c", "d", "h", "s");
 
 function init(user) {
-	var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
-	//var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	//var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
 	try {
 		socket = new WebSocket(host);
 		txtareaelem = $("chat");
@@ -35,7 +35,8 @@ function init(user) {
 								//showimages();
 						   };
 		socket.onmessage = function(msg) { 
-							   log(msg.data); 
+							   process(msg.data)
+							   //log(msg.data); 
 							   //log2(msg.data); 
 						   };
 		socket.onclose   = function(msg) { 
@@ -51,6 +52,18 @@ function init(user) {
 	$("msg").focus();
 }
 
+function process(msg)
+{
+	var match = /CARDS:(.*)/i.exec(msg)
+	if(match[1])
+	{
+		str = match[1].trim()
+		var arr = str.split(" ");
+		showrow("bottom", arr);
+	}
+	log(msg);	
+
+}
 function send(){
 	var txt,msg;
 	txt = $("msg");
@@ -80,7 +93,7 @@ function send2(){
 	txt.value="";
 	txt.focus();
 	try { 
-		socket.send(msg); 
+		//socket.send(msg); 
 		log2('You : '+msg); 
 	} catch(ex) { 
 		log2(ex); 
@@ -153,7 +166,7 @@ function showimages()
 	myArray = new Array("top", "bottom", "left", "right");
 	for(i=0; i<myArray.length; i++) 
 	{
-		showrow(myArray[i], suitArr[i]);
+	//	showrow(myArray[i], suitArr[i]);
 	}
 	showimage("lcenter");
 	showimage("bcenter");
@@ -161,13 +174,14 @@ function showimages()
 	showimage("rcenter");
 }
 
-function showrow(pos, suit)
+function showrow(pos, index)
 {
-	for(j=0;j<cardArr.length; j++)
+	for(j=0;j<index.length; j++)
 	{
-		k=j+1;
-		id = pos+k;
-		src= "images/"+cardArr[j]+suit+".gif";
+		id = pos+j;
+		//src= "images/"+rankArr[j]+index+".gif";
+		src=imagenameforindex(index[j]);
+		//alert(src);
 		showimage(id);
 		setimgsrc(id, src);
 	}
@@ -177,10 +191,9 @@ function showrow(pos, suit)
 
 function imagenameforindex(index)
 {
-	suit=index/persuit;
-	rank=index%persuit;
-	return rank+suiti+".gif";
-
+	var suit=parseInt(index/rankArr.length);
+	var rank=index%rankArr.length;
+	return "images/"+rankArr[rank]+suitArr[suit]+".gif";
 }
 
 function hideimage(id)
