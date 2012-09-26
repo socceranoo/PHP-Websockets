@@ -1,6 +1,12 @@
+var socket, socket2, txtareaelem, teamchat;
+var totalcards, totalplayers, curopencount;
+var deck=52;
+var cardArr = new Array("2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k", "a1");
+var suitArr = new Array("c", "h", "s", "d");
+
 function init(user) {
-	//var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
-	var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	//var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
 	try {
 		socket = new WebSocket(host);
 		txtareaelem = $("chat");
@@ -22,6 +28,10 @@ function init(user) {
 								log('You joined the conference room'); 
 								log2("Connected"); 
 								log2('You joined the conference room'); 
+								totalcards=deck;	
+								totalplayers=4;	
+								cardperplayer=(totalcards/totalplayers);
+								curopencount = totalcards;
 								//showimages();
 						   };
 		socket.onmessage = function(msg) { 
@@ -122,30 +132,70 @@ function onkey2(event)
 	}
 }
 
-function imgclick(id)
+function cardclick(id)
 {
-	$(id).style.visibility='hidden';
-	msg = "clicked "+id+" of clubs";
+	msg = "clicked "+id;
 	log2(msg);
+	hideimage(id);
+	if (curopencount == 0)
+	{
+		showimage("bottomnum");	
+		showimage("rightnum");	
+		showimage("leftnum");	
+		showimage("topnum");	
+		curopencount=totalcards;
+	}
 	//socket.send(msg);
 }
 
 function showimages()
 {
 	myArray = new Array("top", "bottom", "left", "right");
-	cardArr = new Array("2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k", "a1");
-	suitArr = new Array("c", "h", "s", "d");
 	for(i=0; i<myArray.length; i++) 
 	{
-		suit = suitArr[i];	
-		for(j=0;j<cardArr.length; j++)
-		{
-			id = myArray[i]+"img"+cardArr[j];
-			src= "images/"+cardArr[j]+suit+".gif";
-			var elem = $(id);
-			elem.style.visibility='visible';
-			elem.src=src;
-		}
+		showrow(myArray[i], suitArr[i]);
 	}
-	$("temp").onclick="";
+	showimage("lcenter");
+	showimage("bcenter");
+	showimage("tcenter");
+	showimage("rcenter");
+}
+
+function showrow(pos, suit)
+{
+	for(j=0;j<cardArr.length; j++)
+	{
+		k=j+1;
+		id = pos+k;
+		src= "images/"+cardArr[j]+suit+".gif";
+		showimage(id);
+		setimgsrc(id, src);
+	}
+	numid = pos+"num";
+	hideimage(numid);
+}
+
+function imagenameforindex(index)
+{
+	suit=index/persuit;
+	rank=index%persuit;
+	return rank+suiti+".gif";
+
+}
+
+function hideimage(id)
+{
+	$(id).style.visibility='hidden';
+	$(id).style.opacity=0;
+}
+
+function showimage(id)
+{
+	$(id).style.visibility='visible';
+	$(id).style.opacity=1;
+}
+
+function setimgsrc(id, src)
+{
+	$(id).src=src;	
 }

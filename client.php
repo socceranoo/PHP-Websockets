@@ -1,13 +1,12 @@
 <html>
 	<head>
-		<title>WebSocket</title>
+		<title>Gameroom</title>
 		<link rel="STYLESHEET" type="text/css" href="style.css"/>
-		<script> var socket, socket2, txtareaelem, teamchat;</script>
 		<script src="util.js" type="text/javascript"></script>
 		<?require_once("card.php");?>
 	</head>
 	<body class='gameroom' onload="init('Anoop')">
-		<h3>WebSocket v2.00</h3>
+		<h3>Gameroom v2.00</h3>
 		<div class="chatroom">
 			<div class="chatbox">
 				<textarea class="chat" id="chat" disabled="disabled"></textarea>
@@ -26,17 +25,24 @@
 			</div>
 		</div>
 			<div class="card">
-				<div id="temp" class="botcard" onclick="showimages()";>
-					<?showcards("bottom");?>
+				<div id="bottomnum" class="bottomnum" onclick="showimages();"></div>
+				<div class="bottomref">
+					<?generatecards("bottom");?>
 				</div>
-				<div class="leftcard">
-					<?showcards("left");?>
+				<div id="leftnum" class="leftnum"></div>
+				<div class="leftref">
+					<?generatecards("left");?>
 				</div>
-				<div class="rightcard">
-					<?showcards("right");?>
+				<div id="rightnum" class="rightnum"></div>
+				<div class="rightref">
+					<?generatecards("right");?>
 				</div>
-				<div class="topcard">
-					<?showcards("top");?>
+				<div id="topnum" class="topnum"></div>
+				<div class="topref">
+					<?generatecards("top");?>
+				</div>
+				<div class="centerref">
+					<?initcentercards();?>
 				</div>
 			</div>
 		</div>

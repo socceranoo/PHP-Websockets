@@ -52,13 +52,13 @@ body.gameroom
 }
 .gameroom div.chatbox
 {
-	width:300px; 
-	height:180px; 
+	width:200px; 
+	height:260px; 
 	border:2px solid #7F9DB9; 
 }
 .gameroom .chatbox textarea.chat{
 	width:100%; 
-	height:87%; 
+	height:90%; 
 	font-size:12px;
 	font-weight:bold;
 	resize:none;
@@ -67,7 +67,7 @@ body.gameroom
 }
 .gameroom .chatbox input.msg {
 	width:100%;
-	height:13%; 
+	height:10%; 
 }
 
 .msg:focus {
@@ -80,51 +80,99 @@ body.gameroom
 	width:63px;
 }
 
-.gameroom div.botcard {
+.gameroom div.bottomref {
+	width:80px;
+	height:80px;
+	position:absolute;
+	z-index:3;
+	bottom:140px;
+	left:51%;
+}
+
+.gameroom div.bottomnum {
+
+	/*
+	*/
 	background-image:url("images/number-1.jpg");
 	background-size:100% 100%;
 	width:80px;
 	height:80px;
+	z-index:4;
 	-webkit-border-radius: 60px;
 	position:absolute;
 	bottom:160px;
-	left:50%;
-	margin-bottom:20px;
+	left:47%;
 }
 
-.gameroom div.leftcard {
-	background-image:url("images/number-4.jpg");
-	background-size:100% 100%;
+.gameroom div.topref {
 	width:80px;
 	height:80px;
-	-webkit-border-radius: 60px;
 	position:absolute;
-	left:280px;
-	top:40%;
-	margin-left:20px;
+	z-index:3;
+	top:50px;
+	left:51%;
 }
-.gameroom div.rightcard {
-	background-image:url("images/number-2.jpg");
-	background-size:100% 100%;
-	width:80px;
-	height:80px;
-	-webkit-border-radius: 60px;
-	position:absolute;
-	right:294px;
-	top:40%;
-	margin-right:20px;
-}
-
-.gameroom div.topcard {
+.gameroom div.topnum {
 	background-image:url("images/number-3.jpg");
 	background-size:100% 100%;
 	width:80px;
 	height:80px;
+	z-index:3;
 	-webkit-border-radius: 60px;
 	position:absolute;
-	top:30px;
-	left:50%;
-	margin-top:30px;
+	top:60px;
+	left:47%;
+}
+.gameroom div.leftref {
+	width:80px;
+	height:80px;
+	z-index:3;
+	position:absolute;
+	left:240px;
+	top:46%;
+}
+
+.gameroom div.leftnum {
+	background-image:url("images/number-4.jpg");
+	background-size:100% 100%;
+	width:80px;
+	height:80px;
+	z-index:3;
+	-webkit-border-radius: 60px;
+	position:absolute;
+	left:340px;
+	top:36%;
+}
+.gameroom div.rightref {
+	width:80px;
+	height:80px;
+	position:absolute;
+	z-index:3;
+	right:254px;
+	top:46%;
+	/*margin-right:20px;*/
+}
+
+.gameroom div.rightnum {
+	background-image:url("images/number-2.jpg");
+	background-size:100% 100%;
+	width:80px;
+	height:80px;
+	z-index:4;
+	-webkit-border-radius: 60px;
+	position:absolute;
+	right:330px;
+	top:36%;
+}
+
+.gameroom div.centerref {
+	width:80px;
+	height:80px;
+	position:absolute;
+	z-index:3;
+	left:46%;
+	top:37%;
+	/*margin-right:20px;*/
 }
 .gameroom .card img {
 /*
@@ -134,43 +182,53 @@ body.gameroom
 	width:90px;
 	height:120px;
 	visibility:hidden;
+	opacity:0;
+	-webkit-transition:all 0.7s ease-in-out;
+	-moz-transition:all 0.7s ease-in-out;
+	-o-transition:all 0.7s ease-in-out;
+	transition:all 0.7s ease-in-out;
+	/*
+	-webkit-transition: .7s;
+	-moz-transition: 0.7s;
+	transition: 0.7s;
+	-webkit-transition: visibility 1s linear, opacity 0.5s linear;
+	-moz-transition: visibility 1s linear, opacity 0.5s linear;
+	transition: visibility 1s linear, opacity 0.5s linear;
+	-webkit-transition:all 1s ease-in-out;
+	-moz-transition:all 1s ease-in-out;
+	-o-transition:all 1s ease-in-out;
+	-webkit-transition:opacity 1s ease-in-out;
+	-moz-transition:opacity 1s ease-in-out;
+	-o-transition:opacity 1s ease-in-out;
+	transition:opacity 1s ease-in-out;
+	*/
 }
 
-.gameroom .topcard img:hover {
-        -webkit-transition: .5s;
-        -moz-transition: .5s;
-        transition: .5s;
-        position: relative;
-        top: 20px;
+.gameroom .topref img:hover {
+	position: relative;
+	top: 20px;
 }
-.gameroom .botcard img:hover {
-        -webkit-transition: .5s;
-        -moz-transition: .5s;
-        transition: .5s;
-        position: relative;
-        top: -20px;
+.gameroom .bottomref img:hover {
+	position: relative;
+	top: -20px;
 }
 /*
 */
-.gameroom .leftcard img:hover {
-        -webkit-transition: .7s;
-        -moz-transition: .7s;
-        transition: .7s;
-        position: relative;
-        left: 20px;
+.gameroom .leftref img:hover {
+	position: relative;
+	left: 20px;
 }
-.gameroom .rightcard img:hover {
+.gameroom .rightref img:hover {
+	/*
 	-webkit-box-shadow: 0 0 20px rgba(255,255,255,.6), inset 0 0 20px rgba(255,255,255,1);
 	-moz-box-shadow: 0 0 20px rgba(255,255,255,.6), inset 0 0 20px rgba(255,255,255,1);
 	box-shadow: 0 0 20px rgba(255,255,255,.6), inset 0 0 20px rgba(255,255,255,1);
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	border-radius: 20px;
-        -webkit-transition: .7s;
-        -moz-transition: .7s;
-        transition: .7s;
-        position: relative;
-        left: -20px;
+	*/
+	position: relative;
+	left: -20px;
 }
 
 /************************************************************************************
