@@ -67,14 +67,12 @@ body.gameroom
 	height:260px; 
 	border:2px solid #7F9DB9; 
 }
-/*
 .gameroom div.chatbox:hover
 {
 	-webkit-box-shadow: 0 0 40px rgba(0,0,0,1), inset 0 0 40px rgba(0,0,0,1);
 	-moz-box-shadow: 0 0 40px rgba(0,0,0,1), inset 0 0 40px rgba(0,0,0,1);
 	box-shadow: 0 0 40px rgba(0,0,0,1), inset 0 0 40px rgba(0,0,0,1);
 }
-*/
 
 .gameroom .chatbox textarea.chat{
 	width:100%; 
