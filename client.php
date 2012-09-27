@@ -1,4 +1,5 @@
 <?PHP
+	require_once("access.php");
 	$name=uniqid();
 	//$name="Anoop";
 ?>

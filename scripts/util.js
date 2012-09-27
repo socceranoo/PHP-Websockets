@@ -30,7 +30,8 @@ function checkRefresh()
 function init() {
 	//checkRefresh();
 	//var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
-	var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	//var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	var host = "ws://98.234.216.9:9000/Gameroom/testwebsock.php"; // SET THIS TO YOUR SERVER
 	alert("INIT");
 	try {
 		socket = new WebSocket(host);
