@@ -14,7 +14,7 @@ class echoServer extends WebSocketServer {
 		{
 			$user->username = $matches['name'];	
 			$message = $user->username . " joined the conference room";
-			$userCardStr = $this->gameobj->addUser($user->username, array_search($user, $this->users));
+			$userCardStr = $this->gameobj->addUser($user->username, array_search($user, $this->users), $user->id);
 			$this->send($user, $userCardStr);
 		}
 		else

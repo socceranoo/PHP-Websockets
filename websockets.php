@@ -96,6 +96,8 @@ abstract class WebSocketServer {
 		$user = new $this->userClass(uniqid(),$socket);
 		array_push($this->users,$user);
 		array_push($this->sockets,$socket);
+		//print "$user->socket\n";
+		//print "$user->id\n";
 		$this->connecting($user);
 	}
 
@@ -110,6 +112,8 @@ abstract class WebSocketServer {
 			}
 		}
 		if ($foundUser !== null) {
+			//print "$user->id\n";
+			$this->gameobj->removeUser($foundUser, $user->id);
 			unset($this->users[$foundUser]);
 			$this->users = array_values($this->users);
 		}

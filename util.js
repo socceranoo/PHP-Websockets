@@ -3,10 +3,30 @@ var totalcards, totalplayers, curopencount;
 var deck=52;
 var rankArr = new Array("a1", "2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k");
 var suitArr = new Array("c", "d", "h", "s");
+var player_pos ="bottom";
 
-function init(user) {
-	//var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
-	var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+function checkRefresh()
+{
+	if( document.refreshForm.visited.value == "" )
+	{
+		// This is a fresh page load
+		document.refreshForm.visited.value = "1";
+		alert("yes");
+		// You may want to add code here special for
+		// fresh page loads
+	}
+	else
+	{
+		// This is a page refresh
+		confirm("Are you sure you want to refresh?");
+		// Insert code here representing what to do on
+		// a refresh
+	}
+}
+function init() {
+	//checkRefresh();
+	var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	//var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
 	try {
 		socket = new WebSocket(host);
 		txtareaelem = $("chat");
@@ -23,8 +43,6 @@ function init(user) {
 		socket.onopen    = function(msg) { 
 								//log("Welcome - status "+this.readyState); 
 								log("Connected"); 
-								var user_msg = "USER:"+user;
-								socket.send(user_msg); 
 								log('You joined the conference room'); 
 								log2("Connected"); 
 								log2('You joined the conference room'); 
@@ -32,7 +50,7 @@ function init(user) {
 								totalplayers=4;	
 								cardperplayer=(totalcards/totalplayers);
 								curopencount = totalcards;
-								//showimages();
+								showpositions();
 						   };
 		socket.onmessage = function(msg) { 
 							   process(msg.data)
@@ -59,11 +77,28 @@ function process(msg)
 	{
 		str = match[1].trim()
 		var arr = str.split(" ");
-		showrow("bottom", arr);
+		showcardrow(player_pos, arr);
+		showimages();
 	}
 	log(msg);	
 
 }
+
+function showpositions()
+{
+	showimage("bottomnum");
+	showimage("topnum");
+	showimage("leftnum");
+	showimage("rightnum");
+
+}
+function initcards(user, pos)
+{
+	player_pos = pos;
+	var user_msg = "USER:"+user;
+	socket.send(user_msg); 
+}
+
 function send(){
 	var txt,msg;
 	txt = $("msg");
@@ -166,7 +201,7 @@ function showimages()
 	myArray = new Array("top", "bottom", "left", "right");
 	for(i=0; i<myArray.length; i++) 
 	{
-	//	showrow(myArray[i], suitArr[i]);
+		showrow(myArray[i]);
 	}
 	showimage("lcenter");
 	showimage("bcenter");
@@ -174,7 +209,7 @@ function showimages()
 	showimage("rcenter");
 }
 
-function showrow(pos, index)
+function showcardrow(pos, index)
 {
 	for(j=0;j<index.length; j++)
 	{
@@ -185,10 +220,18 @@ function showrow(pos, index)
 		showimage(id);
 		setimgsrc(id, src);
 	}
+}
+
+function showrow(pos)
+{
+	for(j=0;j<rankArr.length; j++)
+	{
+		id = pos+j;
+		showimage(id);
+	}
 	numid = pos+"num";
 	hideimage(numid);
 }
-
 function imagenameforindex(index)
 {
 	var suit=parseInt(index/rankArr.length);

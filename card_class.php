@@ -44,11 +44,16 @@ class Player {
 	public $cardset;
 	public $player_name;
 	public $player_id;
-	function __construct($name, $id) 
+	public $unique_id;
+	public $teamid;
+	public $setid;
+	function __construct($name, $id, $unqid) 
 	{
 		$this->player_name = $name;
 		$this->player_id = $id;
+		$this->unique_id = $unqid;
 		$this->cardset = array();
+		$this->teamid = $id%2;
 		//print "Player:$name with ID:$id joined";
 	}
 	public function addToPlayerHand($card)
@@ -177,44 +182,109 @@ class Deck {
 
 class Trump {
 	public $deckobj;
-	public $playerArr = array();
+	public $playerArr;
 	public $trump;
-	public static $USERS;
+	public $setArr;
+	public static $PLAYERS;
 	public static $CARDPERUSER;
 	function __construct()
 	{
-		$this->USERS=4;
+		$this->PLAYERS=4;
 		$this->CARDPERUSER=13;
 		$this->deckobj = new Deck();
 		$this->deckobj->generateCardDeck();
+		$this->playerArr=array();
+		$this->setArr=array();
 		//$this->deckobj->printCardIndices();
 		//$deckobj->deckShuffle();
 		//$deckobj->printValues();
 	}
 	public function generatePlayerHand($player)
 	{
-		$start= ($this->CARDPERUSER * $player->player_id);
+		$setid = $this->getFreeSetId();
+		$start= ($this->CARDPERUSER * $setid);
 		$end = $start + $this->CARDPERUSER;
-		//print "START:$start END:$end \n";
-		if ($start<52)
+		for ($i=$start;$i<$end;$i++)
 		{
-			for ($i=$start;$i<$end;$i++)
+			$player->addToPlayerHand($this->deckobj->cardArr[$i]);	
+		}
+		$player->setid=$setid;
+		array_push($this->setArr, $setid);
+	}
+	
+	public function getFreeSetId()
+	{
+		for($i=0; $i<$this->PLAYERS;$i++)
+		{
+			if (!in_array($i, $this->setArr))
+				return $i;
+		}
+		return -1;
+	}
+
+	public function removeSetId($id)
+	{
+		foreach ($this->setArr as $key => $elem)
+		{
+			if ($elem == $id)
 			{
-				$player->addToPlayerHand($this->deckobj->cardArr[$i]);	
+				unset($this->setArr[$key]);
+				$this->setArr=array_values($this->setArr);
+				return;
 			}
 		}
 	}
-	public function addUser($name, $id)
+	public function addUser($name, $id, $unqid)
 	{
-		$player= new Player($name, $id);
-		array_push($this->playerArr, $player);
-		$cardStr="CARDS:";
-		$cardArr = $this->generatePlayerHand($player);
-		$player->printCardIndices();
-		$cardStr= $cardStr . $player->arrayToStr();
+		$cardStr="";
+		//print count($this->playerArr)."\n";
+		if (count($this->playerArr) < $this->PLAYERS)
+		{
+			$key = $this->getPlayerIndexById($unqid);
+			if ($key >=0)
+			{
+				$player = $this->playerArr[$key];
+			}
+			else
+			{
+				$player= new Player($name, $id, $unqid);
+				array_push($this->playerArr, $player);
+				$cardArr = $this->generatePlayerHand($player);
+			}
+			//$player->printCardIndices();
+			$cardStr="CARDS:". $player->arrayToStr();
+		}
+		//print count($this->playerArr)."\n";
 		return $cardStr;
 	}
-	
+
+	public function getPlayerIndexById($unqid)
+	{
+		foreach ($this->playerArr as $key => $k)
+		{
+			if($k->unique_id == $unqid)
+			{
+				//print "Key:$key";
+				return $key;
+			}
+		}
+		return -1;
+	}
+
+	public function removeUser($id, $unqid)
+	{
+		$index = $this->getPlayerIndexById($unqid);
+		if ($index>=0)	
+		{
+		//	print "Delete Entered\n";
+			$player =$this->playerArr[$index];
+			$this->removeSetId($player->setid);
+			unset($this->playerArr[$index]);
+			$this->playerArr=array_values($this->playerArr);
+		//	unset($player);
+		}
+		//print count($this->playerArr)."\n";
+	}	
 }
 
 ?>
