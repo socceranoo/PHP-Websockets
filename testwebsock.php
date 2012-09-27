@@ -1,8 +1,8 @@
 #! /usr/local/bin/php
 <?php
 
-require_once('./websockets.php');
-require_once('./card_class.php');
+require_once('./include/websockets.php');
+require_once('./include/card_class.php');
 
 class echoServer extends WebSocketServer {
 	//protected $maxBufferSize = 1048576; //1MB... overkill for an echo server, but potentially plausible for other applications.

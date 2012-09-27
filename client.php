@@ -7,9 +7,9 @@
 		<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>	
 		<title>Gameroom</title>
 		<link rel="icon" type="image/ico" href="images/gamefavicon.ico"/>
-		<link rel="STYLESHEET" type="text/css" href="style.css"/>
+		<link rel="STYLESHEET" type="text/css" href="style/style.css"/>
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
-		<script src="util.js" type="text/javascript"></script>
+		<script src="scripts/util.js" type="text/javascript"></script>
 		<?require_once("card.php");?>
 	</head>
 	<body class='gameroom' onload="init()">
