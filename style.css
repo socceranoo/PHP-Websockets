@@ -67,12 +67,14 @@ body.gameroom
 	height:260px; 
 	border:2px solid #7F9DB9; 
 }
+/*
 .gameroom div.chatbox:hover
 {
 	-webkit-box-shadow: 0 0 40px rgba(0,0,0,1), inset 0 0 40px rgba(0,0,0,1);
 	-moz-box-shadow: 0 0 40px rgba(0,0,0,1), inset 0 0 40px rgba(0,0,0,1);
 	box-shadow: 0 0 40px rgba(0,0,0,1), inset 0 0 40px rgba(0,0,0,1);
 }
+*/
 
 .gameroom .chatbox textarea.chat{
 	width:100%; 
@@ -214,20 +216,19 @@ body.gameroom
 }
 
 .gameroom .card img:hover {
-/*
 	width:111px;
 	height:148px;
-*/
+/*
 	width:90px;
 	height:120px;
+	z-index:-20;
+*/
 	position: relative;
-	z-index: 100;
 	-webkit-box-shadow: 0 0 40px rgba(0,0,0,1), inset 0 0 40px rgba(0,0,0,1);
 	-moz-box-shadow: 0 0 40px rgba(0,0,0,1), inset 0 0 40px rgba(0,0,0,1);
 	box-shadow: 0 0 40px rgba(0,0,0,1), inset 0 0 40px rgba(0,0,0,1);
 
 }
-/*
 .gameroom .topref img:hover {
 	position: relative;
 	top: 20px;
@@ -236,7 +237,6 @@ body.gameroom
 	position: relative;
 	top: -20px;
 }
-/*
 .gameroom .leftref img:hover {
 	position: relative;
 	left: 20px;
@@ -245,7 +245,6 @@ body.gameroom
 	position: relative;
 	left: -20px;
 }
-*/
 
 /************************************************************************************
 MORPHING + GLOWING

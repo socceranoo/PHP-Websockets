@@ -13,22 +13,15 @@ class echoServer extends WebSocketServer {
 		if (preg_match('/(?<USER>\w+):(?<name>\w+)/', $message, $matches))
 		{
 			$user->username = $matches['name'];	
-			$message = $user->username . " joined the conference room";
+			$message = $user->username."joined the conference room";
 			$userCardStr = $this->gameobj->addUser($user->username, array_search($user, $this->users), $user->id);
 			$this->send($user, $userCardStr);
 		}
 		else
 		{
-			$message = $user->username . ":" . $message;
+			$message = $user->username.":".$message;
 		}
-		foreach ($this->users as $k )
-		{
-		//	if ($k != $user)
-			if ($k->socket != $this->master && $k != $user)
-			{
-				$this->send($k, $message);
-			}
-		}
+		$this->broadcast_except_sender($user, $message);
 		//$this->send($user,$message);
 	}
 	

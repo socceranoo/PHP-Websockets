@@ -85,19 +85,36 @@ abstract class WebSocketServer {
     // Override to handle a connecting user, after the instance of the User is created, but before
     // the handshake has completed.
   }
-  
-  protected function send($user,$message) {
+	protected function broadcast_except_sender($sender, $message) {
+		foreach ($this->users as $k ) {
+			if ($k->socket != $this->master && $k != $sender) {
+				$this->send($k, $message);
+			}
+		}
+	}
+
+	protected function broadcast($message) {
+		foreach ($this->users as $k ) {
+			if ($k->socket != $this->master) {
+				$this->send($k, $message);
+			}
+		}
+	}
+
+	protected function send($user,$message) {
 		//$this->stdout("> $message");
 		$message = $this->frame($message,$user);
 		socket_write($user->socket,$message,strlen($message));
 	}
 
 	protected function connect($socket) {
-		$user = new $this->userClass(uniqid(),$socket);
+		$id = uniqid();
+		$user = new $this->userClass($id,$socket);
+		//$user->username="user".$id;
 		array_push($this->users,$user);
 		array_push($this->sockets,$socket);
 		//print "$user->socket\n";
-		//print "$user->id\n";
+		//print "$user->username\n";
 		$this->connecting($user);
 	}
 

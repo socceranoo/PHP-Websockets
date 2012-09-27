@@ -3,7 +3,11 @@ var totalcards, totalplayers, curopencount;
 var deck=52;
 var rankArr = new Array("a1", "2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k");
 var suitArr = new Array("c", "d", "h", "s");
+var myArray = new Array("top", "bottom", "left", "right");
 var player_pos ="bottom";
+var user;
+var cardArr = new Array();
+var cardArr1;
 
 function checkRefresh()
 {
@@ -25,32 +29,36 @@ function checkRefresh()
 }
 function init() {
 	//checkRefresh();
-	var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
-	//var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	//var host = "ws://10.180.157.222:9000/GIT/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	var host = "ws://98.234.216.9:9000/github/PHP-Websockets/testwebsock.php"; // SET THIS TO YOUR SERVER
+	alert("INIT");
 	try {
 		socket = new WebSocket(host);
-		txtareaelem = $("chat");
+		txtareaelem = getid("chat");
 		//log('WebSocket - status '+socket.readyState);
 
-		teamchat = $("tchat");
+		teamchat = getid("tchat");
+		user="Anoop"+document.refreshForm.uname.value;
 
 		log('Welcome to the gameroom');
 		log('Connecting to the server ...');
 
-		log2('Welcome to the gameroom');
-		log2('Connecting to the server ...');
+		//log2('Welcome to the gameroom');
+		//log2('Connecting to the server ...');
 
 		socket.onopen    = function(msg) { 
 								//log("Welcome - status "+this.readyState); 
 								log("Connected"); 
 								log('You joined the conference room'); 
-								log2("Connected"); 
-								log2('You joined the conference room'); 
+								//log2("Connected"); 
+								//log2('You joined the conference room'); 
 								totalcards=deck;	
 								totalplayers=4;	
 								cardperplayer=(totalcards/totalplayers);
 								curopencount = totalcards;
 								showpositions();
+								var user_msg = "USER:"+user;
+								socket.send(user_msg); 
 						   };
 		socket.onmessage = function(msg) { 
 							   process(msg.data)
@@ -59,7 +67,7 @@ function init() {
 						   };
 		socket.onclose   = function(msg) { 
 							   log("Disconnected"); 
-							   log2("Disconnected"); 
+							   //log2("Disconnected"); 
 							   //log("Disconnected - status "+this.readyState); 
 						   };
 
@@ -67,21 +75,23 @@ function init() {
 	catch(ex){ 
 		log(ex); 
 	}
-	$("msg").focus();
+	getid("msg").focus();
 }
 
 function process(msg)
 {
-	var match = /CARDS:(.*)/i.exec(msg)
-	if(match[1])
+	var match = /CARDS:(.*)/i.exec(msg);
+	if(match && match[1])
 	{
-		str = match[1].trim()
+		str = match[1].trim();
 		var arr = str.split(" ");
-		showcardrow(player_pos, arr);
-		showimages();
+		cardArr = arr;
+		cardArr1 = arr;
+		//setusercardrow(player_pos, arr);
+		//showimages();
+		return;
 	}
-	log(msg);	
-
+	log(msg);
 }
 
 function showpositions()
@@ -92,16 +102,21 @@ function showpositions()
 	showimage("rightnum");
 
 }
-function initcards(user, pos)
+function initcards(pos)
 {
 	player_pos = pos;
-	var user_msg = "USER:"+user;
-	socket.send(user_msg); 
+	setusercardrow(player_pos, cardArr);
+	showimages();
+	for(i=0; i<myArray.length; i++) {
+		if (myArray[i] != player_pos) {
+			disableonclickrow(myArray[i]);
+		}
+	}
 }
 
 function send(){
 	var txt,msg;
-	txt = $("msg");
+	txt = getid("msg");
 	msg = txt.value;
 	if(!msg) { 
 		//alert("Message can not be empty"); 
@@ -119,7 +134,7 @@ function send(){
 
 function send2(){
 	var txt,msg;
-	txt = $("tmsg");
+	txt = getid("tmsg");
 	msg = txt.value;
 	if(!msg) { 
 		//alert("Message can not be empty"); 
@@ -156,14 +171,14 @@ function log2(msg)
 	teamchat.scrollTop = teamchat.scrollHeight;
 }
 // Utilities
-function $(id){ return document.getElementById(id); }
+function getid(id){ return document.getElementById(id); }
 function log(msg)
 {
 	txtareaelem.value += msg;
 	txtareaelem.value += "\n";
 	txtareaelem.scrollTop = txtareaelem.scrollHeight;
 // JQUERY EQUIVALENT FOR Text area append;
-// $("log").innerHTML+="<br>"+msg; 
+// getid("log").innerHTML+="<br>"+msg; 
 }
 function onkey(event)
 {
@@ -180,25 +195,16 @@ function onkey2(event)
 	}
 }
 
-function cardclick(id)
+function cardclick(event)
 {
+	id = event.target.id
 	msg = "clicked "+id;
 	log2(msg);
 	hideimage(id);
-	if (curopencount == 0)
-	{
-		showimage("bottomnum");	
-		showimage("rightnum");	
-		showimage("leftnum");	
-		showimage("topnum");	
-		curopencount=totalcards;
-	}
-	//socket.send(msg);
 }
 
 function showimages()
 {
-	myArray = new Array("top", "bottom", "left", "right");
 	for(i=0; i<myArray.length; i++) 
 	{
 		showrow(myArray[i]);
@@ -209,15 +215,33 @@ function showimages()
 	showimage("rcenter");
 }
 
-function showcardrow(pos, index)
+function disableonclickrow(row)
+{
+	for(j=0;j<rankArr.length; j++)
+	{
+		id = row+j;
+		disableonclick(id);
+	}
+
+}
+
+function enableonclickrow(row)
+{
+	for(j=0;j<rankArr.length; j++)
+	{
+		id = row+j;
+		enableonclick(id);
+	}
+
+}
+
+function setusercardrow(pos, index)
 {
 	for(j=0;j<index.length; j++)
 	{
 		id = pos+j;
-		//src= "images/"+rankArr[j]+index+".gif";
 		src=imagenameforindex(index[j]);
-		//alert(src);
-		showimage(id);
+		//showimage(id);
 		setimgsrc(id, src);
 	}
 }
@@ -241,17 +265,27 @@ function imagenameforindex(index)
 
 function hideimage(id)
 {
-	$(id).style.visibility='hidden';
-	$(id).style.opacity=0;
+	getid(id).style.visibility='hidden';
+	getid(id).style.opacity=0;
 }
 
 function showimage(id)
 {
-	$(id).style.visibility='visible';
-	$(id).style.opacity=1;
+	getid(id).style.visibility='visible';
+	getid(id).style.opacity=1;
+}
+
+function disableonclick(id)
+{
+	getid(id).onclick="";
+}
+
+function enableonclick(id)
+{
+	getid(id).onclick=function(){cardclick(event);};
 }
 
 function setimgsrc(id, src)
 {
-	$(id).src=src;	
+	getid(id).src=src;	
 }
